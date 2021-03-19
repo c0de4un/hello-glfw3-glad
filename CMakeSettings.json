@@ -1,0 +1,75 @@
+﻿{
+    "configurations": [
+        {
+            "name": "MSVC-x64-Debug",
+            "generator": "Ninja",
+            "configurationType": "Debug",
+            "inheritEnvironments": [ "msvc_x64_x64" ],
+            "buildRoot": "${projectDir}\\build\\${name}",
+            "installRoot": "${projectDir}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "variables": []
+        },
+        {
+            "name": "Clang-x86-Debug",
+            "generator": "Ninja",
+            "configurationType": "Debug",
+            "buildRoot": "${projectDir}\\build\\${name}",
+            "installRoot": "${projectDir}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "clang_cl_x86" ],
+            "variables": [
+                {
+                    "name": "CXX_VERSION",
+                    "value": "17",
+                    "type": "STRING"
+                },
+                {
+                    "name": "AUTO_DETECT_DEBUG",
+                    "value": "true",
+                    "type": "BOOL"
+                }
+            ]
+        },
+        {
+            "name": "Clang-x86-Release",
+            "generator": "Ninja",
+            "configurationType": "RelWithDebInfo",
+            "buildRoot": "${projectDir}\\build\\${name}",
+            "installRoot": "${projectDir}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "clang_cl_x86" ],
+            "variables": []
+        },
+        {
+            "name": "x86-Debug",
+            "generator": "Ninja",
+            "configurationType": "Debug",
+            "buildRoot": "${projectDir}\\build\\${name}",
+            "installRoot": "${projectDir}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "msvc_x86" ],
+            "variables": []
+        },
+        {
+            "name": "x86-Release",
+            "generator": "Ninja",
+            "configurationType": "RelWithDebInfo",
+            "buildRoot": "${projectDir}\\build\\${name}",
+            "installRoot": "${projectDir}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "msvc_x86" ],
+            "variables": []
+        }
+    ]
+}
