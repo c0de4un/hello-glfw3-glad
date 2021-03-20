@@ -1,0 +1,16 @@
+if ( WIN32 OR WIN64 OR MINGW OR MING32 OR MINGW64 ) # WINDOWS
+    set ( PLATFORM "windows" )
+    set ( WINDOWS ON )
+elseif ( ANDROID )
+    set ( PLATFORM "android" )
+elseif ( LINUX )
+    set ( PLATFORM "linux" )
+elseif ( MAC )
+    set ( PLATFORM "mac" )
+elseif ( IOS )
+    set ( PLATFORM "ios" )
+else ( WIN32 OR WIN64 OR MINGW OR MING32 OR MINGW64 )
+    message ( FATAL_ERROR "${PROJECT_NAME} - failed to detect target-platform, configuration required" )
+endif ( WIN32 OR WIN64 OR MINGW OR MING32 OR MINGW64 )
+
+message ( STATUS "${PROJECT_NAME} - platform is ${PLATFORM}" )

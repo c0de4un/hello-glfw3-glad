@@ -41,6 +41,10 @@
 // Include Windows SDK
 #include <Windows.h>
 
+// GLFW & GLAD
+#include "../../libs/glad/include/gl.h"
+#include <GLFW/glfw3.h>
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
