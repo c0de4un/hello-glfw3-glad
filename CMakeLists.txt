@@ -76,14 +76,37 @@ endif ( PLATFORM STREQUAL "0" )
 # =================================================================================
 
 set ( PROJECT_HEADERS
-    "${LIBS_DIR}glad/include/gl.h" )
+    # GLAD
+    "${LIBS_DIR}glad/include/gl.h"
+    # ENGINE.CORE
+    "${PUBLIC_DIR}engine/cfg/memory.hpp"
+    "${PUBLIC_DIR}engine/cfg/mutex.hpp"
+    "${PUBLIC_DIR}engine/core/utils/metrics/ILogger.hxx"
+    "${PUBLIC_DIR}engine/core/utils/metrics/Log.hpp"
+    "${PUBLIC_DIR}engine/core/utils/metrics/DefaultLogger.hpp"
+    "${PUBLIC_DIR}engine/core/graphics/IGraphicsManager.hxx"
+    "${PUBLIC_DIR}engine/core/graphics/GraphicsManager.hpp"
+    "${PUBLIC_DIR}engine/core/ecs/systems/ISystem.hxx"
+    "${PUBLIC_DIR}engine/core/ecs/systems/System.hpp"
+    # ENGINE.WINDOWS
+    "${PUBLIC_DIR}engine/windows/graphics/WinGraphics.hpp"
+    )
 
 # =================================================================================
 # SOURCES
 # =================================================================================
 
 set ( PROJECT_SOURCES
-    "${PRIVATE_DIR}main.cpp" )
+    # APP
+    "${PRIVATE_DIR}main.cpp"
+    # ENGINE.CORE
+    "${PRIVATE_DIR}engine/core/utils/metrics/Log.cpp"
+    "${PRIVATE_DIR}engine/core/utils/metrics/DefaultLogger.cpp"
+    "${PRIVATE_DIR}engine/core/graphics/GraphicsManager.cpp"
+    "${PRIVATE_DIR}engine/core/ecs/systems/System.cpp"
+    # ENGINE.WINDOWS
+    "${PRIVATE_DIR}engine/windows/graphics/WinGraphics.cpp"
+    )
 
 # =================================================================================
 # RESOURCES
@@ -97,11 +120,20 @@ else ( WINDOWS )
 endif ( WINDOWS )
 
 # =================================================================================
-# LIBRARIES
+# BUILD
 # =================================================================================
 
-# List of Libraries-Objects to Link Target with
-set ( LIBS_TO_LINK "" )
+# Add Executable Object
+add_executable ( ${BUILD_TARGET} ${PROJECT_HEADERS} ${PROJECT_SOURCES} ${EXECUTABLE_RESOURCES} )
+
+# Configure Executable-Object
+set_target_properties ( ${BUILD_TARGET} PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    RUNTIME_OUTPUT_DIRECTORY "${RUNTIME_OUTPUT_DIRECTORY}" )
+
+# =================================================================================
+# LIBRARIES
+# =================================================================================
 
 # - - - - - - - - - - - - - - - - - - OpenGL - - - - - - - - - - - - - - - - - - -
 
@@ -110,20 +142,5 @@ include ( "${CMAKE_INCLUDES_DIR}opengl.cmake" )
 # - - - - - - - - - - - - - - - - - - GLFW - - - - - - - - - - - - - - - - - - - -
 
 include ( "${CMAKE_INCLUDES_DIR}glfw.cmake" )
-
-# =================================================================================
-# BUILD
-# =================================================================================
-
-# Add Executable Object
-add_executable ( ${EXECUTABLE_OUTPUT_NAME} ${PROJECT_HEADERS} ${PROJECT_SOURCES} ${EXECUTABLE_RESOURCES} )
-
-# Configure Executable-Object
-set_target_properties ( ${EXECUTABLE_OUTPUT_NAME} PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    RUNTIME_OUTPUT_DIRECTORY "${RUNTIME_OUTPUT_DIRECTORY}" )
-
-# Link
-target_link_libraries ( ${EXECUTABLE_OUTPUT_NAME} ${LIBS_TO_LINK} )
 
 # ------------------------------------------------------------------------------

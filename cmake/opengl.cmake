@@ -12,4 +12,7 @@ else ( opengl )
 endif ( opengl )
 
 # Add OpenGL to Link-List
-set ( LIBS_TO_LINK ${LIBS_TO_LINK} ${opengl} )
+#set ( LIBS_TO_LINK ${LIBS_TO_LINK} ${opengl} )
+
+# Link OpenGL
+target_link_libraries ( ${BUILD_TARGET} glfw )

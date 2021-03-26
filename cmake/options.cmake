@@ -16,8 +16,8 @@ set ( PUBLIC_DIR "${SRC_DIR}public/" CACHE STRING "Public/Include project source
 # Private-Sources Dir
 set ( PRIVATE_DIR "${SRC_DIR}private/" CACHE STRING "Private project sources dir" )
 
-# Executable-Object Name
-set ( EXECUTABLE_OUTPUT_NAME "HelloOpenGL" CACHE STRING "Private project sources dir" )
+# Current Build Target ID
+set ( BUILD_TARGET "HelloOpenGL" CACHE STRING "Private project sources dir" )
 
 # Output dir
 set ( RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin" CACHE STRING "Private project sources dir" )

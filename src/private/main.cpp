@@ -45,6 +45,16 @@
 #include "../../libs/glad/include/gl.h"
 #include <GLFW/glfw3.h>
 
+// c0de4un::engine::core::Log
+#ifndef C0DE4UN_ENGINE_CORE_LOG_HPP
+#include "../public/engine/core/utils/metrics/Log.hpp"
+#endif // !C0DE4UN_ENGINE_CORE_LOG_HPP
+
+// Include c0de4un::engine::core::DefaultEngine
+#ifndef C0DE4UN_ENGINE_CORE_DEFAULT_LOGGER_HPP
+#include "../public/engine/core/utils/metrics/DefaultLogger.hpp"
+#endif // !C0DE4UN_ENGINE_CORE_DEFAULT_LOGGER_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,18 +68,79 @@
 // MAIN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+bool start()
+{
+    engine_Log::Initialize( new engine_DefaultLogger() );
+
+    // Guarded-Block
+    try
+    {
+        // Initialize GLFW
+        if ( !glfwInit() )
+        {
+#ifdef DEBUG // DEBUG
+            engine_Log::error( "main::start: failed to initialize GLFW instance" );
+#endif // DEBUG
+
+            return false;
+        }
+    }
+    catch(const std::exception& e)
+    {
+#ifdef DEBUG // DEBUG
+        engine_Log::error( e.what() );
+#endif // DEBUG
+
+        return false;
+    }
+
+    return true;
+}
+
+void stop()
+{
+    // Guarded-Block
+    try
+    {
+        // Terminate GLFW
+        glfwTerminate();
+    }
+    catch(const std::exception& e)
+    {
+#ifdef DEBUG // DEBUG
+        engine_Log::error( e.what() );
+#endif // DEBUG
+    }
+
+    engine_Log::Terminate();
+}
+
 int main()
 {
+#ifdef DEBUG // DEBUG
+    std::cout << "Starting . . ." << std::endl;
+#endif // DEBUG
+
     // Set console code page to UTF-8 so console known how to interpret string data
     SetConsoleOutputCP( CP_UTF8 );
 
     // Enable buffering to prevent VS from chopping up UTF-8 byte sequences
     setvbuf( stdout, nullptr, _IOFBF, 1000 );
 
-    // Output
-    const std::string str( u8"Привет мир !" );
-    std::cout << str << std::endl;
+    if ( !start() )
+    {
+#ifdef DEBUG // DEBUG
+        std::cout << "ERORR" << std::endl << "Press any key to exit" << std::endl;
+        std::cin.get();
+#endif // DEBUG
+    }
+
+    stop();
+
+#ifdef DEBUG // DEBUG
+    std::cout << "Completed . . ." << std::endl << "Press any key to exit" << std::endl;
     std::cin.get();
+#endif // DEBUG
 
     return OK;
 }
