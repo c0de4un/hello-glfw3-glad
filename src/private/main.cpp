@@ -41,19 +41,24 @@
 // Include Windows SDK
 #include <Windows.h>
 
-// GLFW & GLAD
-#include "../../libs/glad/include/gl.h"
-#include <GLFW/glfw3.h>
+// Include c0de4un::engine::win::WinGraphics
+#ifndef C0DE4UN_ENGINE_WIN_GRAPHICS_HPP
+#include "../public/engine/windows/graphics/WinGraphics.hpp"
+#endif // !C0DE4UN_ENGINE_WIN_GRAPHICS_HPP
+
+#ifdef DEBUG // DEBUG
 
 // c0de4un::engine::core::Log
 #ifndef C0DE4UN_ENGINE_CORE_LOG_HPP
 #include "../public/engine/core/utils/metrics/Log.hpp"
 #endif // !C0DE4UN_ENGINE_CORE_LOG_HPP
 
-// Include c0de4un::engine::core::DefaultEngine
+// Include c0de4un::engine::core::DefaultLogger
 #ifndef C0DE4UN_ENGINE_CORE_DEFAULT_LOGGER_HPP
 #include "../public/engine/core/utils/metrics/DefaultLogger.hpp"
 #endif // !C0DE4UN_ENGINE_CORE_DEFAULT_LOGGER_HPP
+
+#endif // DEBUG
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -65,21 +70,37 @@
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FIELDS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/** GraphicsManager **/
+engine_WinGraphics* mGraphics(nullptr);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MAIN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-bool start()
+bool init()
 {
+#ifdef DEBUG // DEBUG
     engine_Log::Initialize( new engine_DefaultLogger() );
+#endif // DEBUG
 
     // Guarded-Block
     try
     {
-        // Initialize GLFW
-        if ( !glfwInit() )
+        if ( !mGraphics )
+        {
+            // Initialize GraphicsManager instance
+            mGraphics = new engine_WinGraphics();
+            engine_WinGraphics::Initialize( static_cast<engine_Graphics*>(mGraphics) );
+            mGraphics = static_cast<engine_WinGraphics*>( engine_WinGraphics::getInstance() );
+        }
+
+        if ( !mGraphics->Start() )
         {
 #ifdef DEBUG // DEBUG
-            engine_Log::error( "main::start: failed to initialize GLFW instance" );
+            engine_Log::error( "main::init: failed to start WinGraphics" );
 #endif // DEBUG
 
             return false;
@@ -97,13 +118,17 @@ bool start()
     return true;
 }
 
-void stop()
+void terminate()
 {
     // Guarded-Block
     try
     {
-        // Terminate GLFW
-        glfwTerminate();
+        // Stop & Release Graphics
+        if ( mGraphics )
+        {
+            engine_WinGraphics::Terminate();
+            mGraphics = nullptr;
+        }
     }
     catch(const std::exception& e)
     {
@@ -127,15 +152,15 @@ int main()
     // Enable buffering to prevent VS from chopping up UTF-8 byte sequences
     setvbuf( stdout, nullptr, _IOFBF, 1000 );
 
-    if ( !start() )
+    if ( !init() )
     {
 #ifdef DEBUG // DEBUG
         std::cout << "ERORR" << std::endl << "Press any key to exit" << std::endl;
         std::cin.get();
 #endif // DEBUG
     }
-
-    stop();
+    
+    terminate();
 
 #ifdef DEBUG // DEBUG
     std::cout << "Completed . . ." << std::endl << "Press any key to exit" << std::endl;

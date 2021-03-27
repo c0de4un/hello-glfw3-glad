@@ -41,6 +41,11 @@
 #include "../../../cfg/mutex.hpp"
 #endif // !C0DE4UN_ENGINE_CFG_MUTEX_HPP
 
+// Include c0de4un::engine::ecs::ISystem
+#ifndef C0DE4UN_ENGINE_ECS_I_SYSTEM_HXX
+#include "ISystem.hxx"
+#endif // !C0DE4UN_ENGINE_ECS_I_SYSTEM_HXX
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,7 +71,7 @@ namespace c0de4un
              *
              * @version 1.0
             **/
-            class System
+            class System : public ecs_ISystem
             {
 
             private:
@@ -132,7 +137,7 @@ namespace c0de4un
                  * @throws - can throw exception
                  * @return - 'true' of OK
                 **/
-                virtual bool onStart() = 0;
+                virtual bool onStart();
 
                 /**
                  * @brief
@@ -142,7 +147,7 @@ namespace c0de4un
                  * @throws - can throw exception
                  * @return - 'true' if OK
                 **/
-                virtual bool onResume() = 0;
+                virtual bool onResume();
 
                 /**
                  * @brief
@@ -151,7 +156,7 @@ namespace c0de4un
                  * @thread_safety - thread-lock used
                  * @throws - no exceptions.
                 **/
-                virtual void onPause() noexcept = 0;
+                virtual void onPause() noexcept;
 
                 /**
                  * @brief
@@ -160,7 +165,7 @@ namespace c0de4un
                  * @thread_safety - thread-lock used
                  * @throws - no exceptions.
                 **/
-                virtual void onStop() noexcept = 0;
+                virtual void onStop() noexcept;
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

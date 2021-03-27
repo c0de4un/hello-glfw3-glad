@@ -71,6 +71,13 @@ namespace c0de4un
             GraphicsManager::~GraphicsManager() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // GETTERS & SETTERS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            GraphicsManager* GraphicsManager::getInstance() noexcept
+            { return mInstance; }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

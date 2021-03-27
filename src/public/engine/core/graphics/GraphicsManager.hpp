@@ -128,6 +128,19 @@ namespace c0de4un
                 virtual ~GraphicsManager() noexcept;
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // GETTERS & SETTERS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                /**
+                 * @brief
+                 * Returns GraphicsManager instance
+                 * 
+                 * @thread_safety - not required
+                 * @throws - no exceptions
+                **/
+                static GraphicsManager* getInstance() noexcept;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

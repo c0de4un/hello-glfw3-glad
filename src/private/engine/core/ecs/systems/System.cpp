@@ -88,6 +88,24 @@ namespace c0de4un
             // METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            bool System::onStart()
+            {
+                return true;
+            }
+
+            bool System::onResume()
+            {
+                return true;
+            }
+
+            void System::onPause() noexcept
+            {
+            }
+
+            void System::onStop() noexcept
+            {
+            }
+
             bool System::Start()
             {
                 int result( 0 );

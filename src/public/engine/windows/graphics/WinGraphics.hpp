@@ -41,6 +41,11 @@
 #include "../../core/graphics/GraphicsManager.hpp"
 #endif // !C0DE4UN_ENGINE_CORE_GRAPHICS_MANAGER_HPP
 
+// GLFW & GLAD
+#include <glad/glad.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,6 +73,32 @@ namespace c0de4un
             **/
             class WinGraphics final : public engine_Graphics
             {
+
+            private:
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // FIELDS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                GLFWwindow* mGLFWWindow;
+                int mSurfaceWidth, mSurfaceHeight;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // METHODS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                /**
+                 * @brief
+                 * MainLoop
+                 * 
+                 * @thread_safety - main/render thread only
+                 * @throws - no exceptions
+                **/
+                void mainLoop() noexcept;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             protected:
 

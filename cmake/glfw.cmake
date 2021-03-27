@@ -1,3 +1,10 @@
+# - - - - - - - - - - - - - - - - - - GLAD - - - - - - - - - - - - - - - - - - -
+
+target_include_directories ( ${BUILD_TARGET} PRIVATE "${LIBS_DIR}glad/include" )
+target_sources ( ${BUILD_TARGET} PUBLIC "${LIBS_DIR}/glad/src/glad.c" )
+
+# - - - - - - - - - - - - - - - - - - GLFW - - - - - - - - - - - - - - - - - - -
+
 find_package ( GLFW3 QUIET )
 if ( NOT GLFW3_FOUND )
     message ( STATUS "${PROJECT_NAME} - package GLFW3 not found. Checking local ")
@@ -23,9 +30,6 @@ if ( NOT GLFW3_FOUND )
     # Set GLFW Library-Object Properties
     set_target_properties( glfw PROPERTIES
     IMPORTED_LOCATION "${GLFW3_LOCATION}" )
-
-    # Add GLFW3 to Link-List
-    #set ( LIBS_TO_LINK ${LIBS_TO_LINK} glfw )
 
     # Link GLFW3
     target_link_libraries ( ${BUILD_TARGET} glfw )

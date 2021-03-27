@@ -38,6 +38,20 @@
 #include "../../../../public/engine/windows/graphics/WinGraphics.hpp"
 #endif // !C0DE4UN_ENGINE_WIN_GRAPHICS_HPP
 
+// DEBUG
+#ifdef DEBUG
+
+// Include c0de4un::engine::core::Log
+#ifndef C0DE4UN_ENGINE_CORE_LOG_HPP
+#include "../../../../public/engine/core/utils/metrics/Log.hpp"
+#endif // !C0DE4UN_ENGINE_CORE_LOG_HPP
+
+// Include STL string
+#include <string>
+
+#endif
+// DEBUG
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // c0de4un::engine::core::WinGraphics
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,32 +72,140 @@ namespace c0de4un
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             WinGraphics::WinGraphics()
-                : GraphicsManager()
+                : GraphicsManager(),
+                mGLFWWindow(nullptr),
+                mSurfaceWidth(0),
+                mSurfaceHeight(0)
             {
             }
 
             WinGraphics::~WinGraphics() noexcept = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            void WinGraphics::mainLoop() noexcept
+            {
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::mainLoop > > >" );
+#endif // DEBUG
+
+                while( !glfwWindowShouldClose(mGLFWWindow) )
+                {
+                    glClear(GL_COLOR_BUFFER_BIT);
+
+                    glViewport( 0, 0, mSurfaceWidth, mSurfaceHeight );
+
+                    glfwSwapBuffers(mGLFWWindow);
+
+                    glfwPollEvents();
+                }
+
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::mainLoop < < <" );
+#endif // DEBUG
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // OVERRIDE: System
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             bool WinGraphics::onStart()
-            {// @TODO: WinGraphics::onStart
-                return false;
+            {
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::onStart > > >" );
+#endif // DEBUG
+
+                // Guarded-Block
+                try
+                {
+                    // Initialize GLFW
+                    if ( !glfwInit() )
+                    {
+#ifdef DEBUG // DEBUG
+                        engine_Log::error( "WinGraphics::onStart: failed to initialize GLFW instance" );
+#endif // DEBUG
+
+                        return false;
+                    }
+
+                    // Create Window
+                    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+                    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+                    mGLFWWindow = glfwCreateWindow(640, 480, "Hello OpenGL", nullptr, nullptr);
+                    if ( !mGLFWWindow )
+                    {
+#ifdef DEBUG // DEBUG
+                        engine_Log::error( "WinGraphics::onStart: failed to create GLFW-Window " );
+#endif // DEBUG
+
+                        glfwTerminate();
+
+                        return false;
+                    }
+
+                    // Bind Render Context to Window
+                    glfwMakeContextCurrent(mGLFWWindow);
+
+                    // Get OpenGL Surface Width & Height
+                    glfwGetFramebufferSize(mGLFWWindow, &mSurfaceWidth, &mSurfaceHeight);
+
+                    // Init GLAD
+                    gladLoadGL();
+
+                    // Main Loop
+                    mainLoop();
+                }
+                catch ( const std::exception& pException )
+                {
+#ifdef DEBUG // DEBUG
+                    std::string errMsg( "WinGraphics::onStart: ERROR: " );
+                    errMsg += pException.what();
+                    engine_Log::error( errMsg.c_str() );
+#endif // DEBUG
+                    return false;
+                }
+
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::onStart < < <" );
+#endif // DEBUG
+
+                return true;
             }
 
             bool WinGraphics::onResume()
-            {// @TODO: WinGraphics::onResume
-                return false;
-            }
+            { return true; }
 
-            void WinGraphics::onPause() noexcept
-            {// @TODO: WinGraphics::onPause
-            }
+            void WinGraphics::onPause() noexcept {}
 
             void WinGraphics::onStop() noexcept
-            {// @TODO: WinGraphics::onStop
+            {
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::onStop > > >" );
+#endif // DEBUG
+
+                // Guarded-Block
+                try
+                {
+                    if ( mGLFWWindow )
+                        glfwDestroyWindow(mGLFWWindow);
+
+                    glfwTerminate();
+                    mGLFWWindow = nullptr;
+                }
+                catch ( const std::exception& pException )
+                {
+#ifdef DEBUG // DEBUG
+                    std::string errMsg( "WinGraphics::onStop: ERROR: " );
+                    errMsg += pException.what();
+                    engine_Log::error( errMsg.c_str() );
+#endif // DEBUG
+                }
+
+#ifdef DEBUG // DEBUG
+                engine_Log::info( "WinGraphics::onStop < < <" );
+#endif // DEBUG
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

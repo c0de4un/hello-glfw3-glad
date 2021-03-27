@@ -76,8 +76,6 @@ endif ( PLATFORM STREQUAL "0" )
 # =================================================================================
 
 set ( PROJECT_HEADERS
-    # GLAD
-    "${LIBS_DIR}glad/include/gl.h"
     # ENGINE.CORE
     "${PUBLIC_DIR}engine/cfg/memory.hpp"
     "${PUBLIC_DIR}engine/cfg/mutex.hpp"
